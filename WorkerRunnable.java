@@ -12,7 +12,7 @@ public class WorkerRunnable implements Runnable {
     }
 
     public void run() {
-        String output = "";
+        String output = "echo";
         try {
             Reader clientStream = new InputStreamReader(clientSocket.getInputStream());
             PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(),true);
@@ -22,19 +22,13 @@ public class WorkerRunnable implements Runnable {
                 int done =clientStream.read(arr);
                 if (arr[0]=='^') {
                     writer.println("Client Disconnected");
+                    System.out.println("Client Disconnected");
                     clientSocket.close();
                     break;
                 }
                 System.out.print(arr);
-                output=output.concat(new String(arr));
-                if(done ==-1){
-                    System.out.println("IO error");
-                    writer.println(arr);
-                }
-
-
+                writer.printf("%c",arr[0]);
             }
-
         } catch (IOException err) {
             System.out.println("IO error");
         }

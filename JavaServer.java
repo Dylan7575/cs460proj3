@@ -6,7 +6,7 @@ import java.net.Socket;
  * Created by Dylan on 10/6/2016.
  */
 public class JavaServer {
-    private static int port = 23667;
+    private static int port = 23666;
     private static ServerSocket serversocket;
 
 
@@ -24,4 +24,3 @@ public class JavaServer {
         }
     }
 }
-
