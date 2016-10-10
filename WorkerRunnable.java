@@ -6,40 +6,37 @@ import java.lang.*;
  */
 public class WorkerRunnable implements Runnable {
     protected Socket clientSocket = null;
-    public WorkerRunnable(Socket clientSocket){
-        this.clientSocket=clientSocket;
+
+    public WorkerRunnable(Socket clientSocket) {
+        this.clientSocket = clientSocket;
     }
-    public void run(){
+
+    public void run() {
+        String output = "";
         try {
-            Reader ClientStream = new InputStreamReader(clientSocket.getInputStream());
-            PrintWriter clientWriter = new PrintWriter(clientSocket.getOutputStream());
-            try {
-                characterReader(ClientStream);
-            }
-            catch(Exception err){
-                System.out.println("y");
+            Reader clientStream = new InputStreamReader(clientSocket.getInputStream());
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(),true);
+            writer.println("type ^ to end the connection to the server");
+            while (true) {
+                char arr[]=new char[1];
+                int done =clientStream.read(arr);
+                if (arr[0]=='^') {
+                    writer.println("Client Disconnected");
+                    clientSocket.close();
+                    break;
+                }
+                System.out.print(arr);
+                output=output.concat(new String(arr));
+                if(done ==-1){
+                    System.out.println("IO error");
+                    writer.println(arr);
+                }
+
+
             }
 
-        }
-        catch(IOException err){
+        } catch (IOException err) {
             System.out.println("IO error");
         }
     }
-    public char[] characterReader (Reader stream)throws Exception{
-        int length= clientSocket.getInputStream().available();
-        char[] arr = new char[length];
-        System.out.println(length);
-        try{
-            int f =stream.read();
-             arr[0]=Character.forDigit(f,10);
-        }
-        catch(IOException err){
-            System.out.println("error with input stream");
-        }
-        return arr;
-
-
-
-    }
-
 }

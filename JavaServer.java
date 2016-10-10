@@ -19,12 +19,9 @@ public class JavaServer {
             if(clientSocket!=null){
                 System.out.println("Client accepted");
             }
-            else{
-                System.out.println("Waiting for Connections on port number "+port);
-            }
-
             (new Thread(new WorkerRunnable(clientSocket))).start();
 
         }
     }
 }
+
